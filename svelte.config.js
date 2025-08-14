@@ -12,7 +12,8 @@ const config = {
 		alias: {
 			$graphql: 'src/lib/graphql',
 			$schema: 'src/lib/schema',
-			$types: 'src/lib/types'
+			$types: 'src/lib/types',
+      $database: 'src/lib/database',
 		}
 	}
 };
