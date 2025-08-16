@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Player, IPlayer, PlayerPosition } from '../../lib/schema/Player';
 import { PlayerFactory } from '../fixtures/PlayerFactory';
 
@@ -10,20 +11,32 @@ import { PlayerFactory } from '../fixtures/PlayerFactory';
  * testing all database operations, indexes, and constraints end-to-end.
  */
 describe('Player Database Integration', () => {
+  let mongoServer: MongoMemoryServer;
+
   beforeAll(async () => {
-    // Connect to test database
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/touchline-elite-integration-test';
-    await mongoose.connect(mongoUri);
+    // Start MongoDB Memory Server
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
     
-    // Ensure we have a clean database
-    await mongoose.connection.db.dropDatabase();
-  }, 15000);
+    try {
+      await mongoose.connect(mongoUri);
+      console.log('Connected to MongoDB Memory Server for testing');
+    } catch (error) {
+      console.error('Failed to connect to MongoDB:', error);
+      throw error;
+    }
+  }, 30000);
 
   afterAll(async () => {
     // Clean up and disconnect
-    await mongoose.connection.db.dropDatabase();
-    await mongoose.disconnect();
-  }, 15000);
+    try {
+      await mongoose.disconnect();
+      await mongoServer.stop();
+      console.log('Disconnected from MongoDB and stopped memory server');
+    } catch (error) {
+      console.error('Error during cleanup:', error);
+    }
+  }, 30000);
 
   beforeEach(async () => {
     // Clear the players collection before each test

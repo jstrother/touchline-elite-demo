@@ -90,7 +90,6 @@ const PlayerSchema = new Schema<IPlayer>(
       type: Number,
       required: [true, 'sportmonksId is required'],
       unique: true,
-      index: true,
       validate: {
         validator: (value: number): boolean => {
           return Number.isInteger(value) && value > 0;
@@ -166,8 +165,7 @@ const PlayerSchema = new Schema<IPlayer>(
       enum: {
         values: Object.values(PlayerPosition),
         message: 'Position must be one of: Goalkeeper, Defender, Midfielder, Forward'
-      },
-      index: true
+      }
     },
     detailedPosition: {
       type: String,
@@ -210,8 +208,7 @@ const PlayerSchema = new Schema<IPlayer>(
     },
     deletedAt: {
       type: Date,
-      default: null,
-      index: true
+      default: null
     }
   },
   {
