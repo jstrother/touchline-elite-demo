@@ -5,9 +5,10 @@ const mockSchema = {
 	index: vi.fn(),
 	virtual: vi.fn().mockReturnThis(),
 	get: vi.fn().mockReturnThis(),
+	set: vi.fn().mockReturnThis(),
+	pre: vi.fn(),
 	methods: {},
-	statics: {},
-	pre: vi.fn()
+	statics: {}
 };
 
 const mockModel = vi.fn().mockImplementation((data) => ({

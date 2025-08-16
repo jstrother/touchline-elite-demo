@@ -1,5 +1,9 @@
 import 'reflect-metadata';
 import { beforeEach, vi } from 'vitest';
+import { setupCustomMatchers } from './helpers/matchers';
+
+// Set up custom domain matchers
+setupCustomMatchers();
 
 vi.mock('$env/static/private', () => ({
   MONGODB_URI: 'mongodb://localhost:27017/touchline-elite-test',
